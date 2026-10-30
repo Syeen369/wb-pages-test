@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>小鹿｜帮小红书和抖音商家写文案、剪视频</title>
+  <style>
+    @font-face { font-family: "LXGW WenKai"; src: url("assets/fonts/LXGWWenKai-Regular.woff2") format("woff2"); font-weight: 300 700; font-display: swap; }
+    :root {
+      --nav-h: 64px; --nav-offset: 80px;
+      --paper: #f7f4ee; --ink: #1c2a24; --ink-soft: #5a6a62;
+      --accent: #1f5b4a; --on-accent: #f3faf6;
+      --card: #fffdf9; --muted: #e8efe9;
+      --line: color-mix(in srgb, var(--ink) 12%, transparent);
+      --font-heading: "LXGW WenKai", "Kaiti SC", "KaiTi", serif;
+      --font-body: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--font-body); font-size: 17px; line-height: 1.85; -webkit-font-smoothing: antialiased; }
+    h1,h2,h3,.brand { font-family: var(--font-heading); text-wrap: balance; font-weight: 500; }
+    .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 10; background: transparent; transition: background .3s; }
+    .site-header.is-scrolled { background: color-mix(in srgb, var(--paper) 90%, transparent); backdrop-filter: blur(10px); }
+    .bar { min-height: var(--nav-h); max-width: 1040px; margin: 0 auto; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand, .nav button { border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+    .brand { font-size: 1.15rem; }
+    .nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px 14px; }
+    .nav button { padding: 6px 2px; font-size: .92rem; letter-spacing: .08em; color: var(--ink-soft); }
+    section, footer { padding-inline: max(24px, calc((100% - 992px) / 2)); }
+    section { padding-block: clamp(52px, 7vw, 96px); scroll-margin-top: var(--nav-offset); }
+    section + section { border-top: 1px solid transparent; border-image: linear-gradient(90deg, transparent, var(--line) 18%, var(--line) 82%, transparent) 1; }
+    .label { display: block; margin: 8px 0 14px; font-size: .78rem; letter-spacing: .2em; color: var(--accent); }
+    h2 { font-size: clamp(1.65rem, 3vw, 2.3rem); margin: 0 0 16px; }
+    p { margin: 0 0 14px; max-width: 38em; }
+    .btn { display: inline-block; margin-top: 0; padding: 12px 26px; border: 0; border-radius: 999px; background: var(--accent); color: var(--on-accent); font: 500 1rem/1.4 var(--font-body); letter-spacing: .05em; cursor: pointer; text-decoration: none; }
+    .btn-ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+    /* ===== 首屏 ===== */
+    #home {
+      padding-top: calc(var(--nav-offset) + clamp(28px, 5vw, 64px));
+      background:
+        radial-gradient(70% 55% at 100% 0%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 55%),
+        linear-gradient(180deg, #eef6f1 0%, var(--paper) 72%);
+    }
+    .hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(24px, 4vw, 48px); align-items: center; }
+    .hero h1 { font-size: clamp(2.6rem, 5.2vw, 4rem); line-height: 1.15; margin: 0 0 14px; }
+    .hero .service-line { font-size: clamp(1.12rem, 2.2vw, 1.38rem); max-width: 22em; margin-bottom: 8px; }
+    .hero .sub { color: var(--ink-soft); margin-bottom: 22px; font-size: .98rem; letter-spacing: .04em; }
+    .hero-visual { position: relative; }
+    .hero-visual img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 12px; display: block; box-shadow: 0 18px 40px rgba(28,42,36,.12); }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 8px; }
+    .stat { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 12px; }
+    .stat .num { font-family: var(--font-heading); font-size: clamp(1.15rem, 2vw, 1.4rem); color: var(--accent); line-height: 1.3; }
+    .stat .cap { display: block; margin-top: 4px; font-size: .78rem; color: var(--ink-soft); letter-spacing: .04em; }
+    .stats-note { margin: 10px 0 0; font-size: .78rem; color: var(--ink-soft); }
+
+    /* ===== 案例 ===== */
+    .case-block { margin-top: 42px; padding-top: 28px; border-top: 1px solid var(--line); }
+    .case-block:first-of-type { margin-top: 18px; }
+    .case-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 18px; margin-bottom: 10px; }
+    .case-head h3 { margin: 0; font-size: clamp(1.25rem, 2.4vw, 1.55rem); }
+    .case-tag { font-size: .78rem; letter-spacing: .08em; color: var(--accent); background: var(--muted); padding: 4px 10px; border-radius: 999px; }
+    .info-row { font-size: .92rem; color: var(--ink-soft); margin: 0 0 14px; max-width: none; line-height: 1.7; }
+    .case-bg { color: var(--ink-soft); margin-bottom: 20px; }
+
+    .excerpt {
+      background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+      padding: 18px 18px 16px; margin: 0 0 18px; max-width: 36em;
+    }
+    .excerpt .ex-label { font-size: .72rem; letter-spacing: .16em; color: var(--accent); margin-bottom: 8px; }
+    .excerpt .ex-title { font-family: var(--font-heading); font-size: 1.15rem; margin: 0 0 10px; line-height: 1.45; }
+    .excerpt p { margin: 0 0 8px; color: var(--ink); font-size: .95rem; max-width: none; }
+    .excerpt p:last-child { margin-bottom: 0; }
+
+    .ba { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 18px; }
+    .ba article { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 14px 12px; }
+    .ba .ba-label { font-size: .72rem; letter-spacing: .14em; color: var(--ink-soft); margin-bottom: 8px; }
+    .ba .after .ba-label { color: var(--accent); }
+    .ba p { margin: 0; font-size: .93rem; max-width: none; }
+    .ba-why { font-size: .88rem; color: var(--ink-soft); margin: 0 0 18px; max-width: 40em; }
+
+    .cover-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0 0 16px; }
+    .cover { position: relative; border-radius: 10px; overflow: hidden; background: #111; }
+    .cover img { width: 100%; aspect-ratio: 9/16; object-fit: cover; display: block; }
+    .cover.note img { aspect-ratio: 3/4; }
+    .badge {
+      position: absolute; left: 8px; bottom: 8px;
+      background: rgba(0,0,0,.72); color: #fff; font-size: .72rem;
+      padding: 3px 8px; border-radius: 6px; letter-spacing: .04em; font-variant-numeric: tabular-nums;
+    }
+    .platform-badge {
+      position: absolute; right: 8px; top: 8px;
+      background: rgba(0,0,0,.55); color: #fff; font-size: .68rem;
+      padding: 3px 8px; border-radius: 999px; letter-spacing: .06em;
+    }
+    .cover-title {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 28px 12px 36px;
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.78) 100%);
+      color: #fff; font-size: .82rem; line-height: 1.45; font-weight: 500;
+    }
+    .cover.dark-card .cover-title {
+      top: 18%; bottom: auto; padding: 0 14px;
+      background: none; text-align: center;
+      font-family: var(--font-heading); font-size: clamp(.95rem, 1.6vw, 1.15rem); line-height: 1.5;
+      text-shadow: 0 2px 12px rgba(0,0,0,.55);
+    }
+    .cover.dark-card .ep {
+      position: absolute; top: 12px; left: 12px;
+      font-size: .72rem; letter-spacing: .14em; color: rgba(255,255,255,.85);
+      background: rgba(0,0,0,.35); padding: 4px 10px; border-radius: 999px;
+    }
+    .hook { font-family: var(--font-heading); font-size: 1.05rem; color: var(--ink); margin: 0 0 10px; max-width: 34em; }
+    .deliver { font-size: .9rem; color: var(--ink-soft); margin: 0; }
+
+    .note-row { display: grid; grid-template-columns: .72fr 1.28fr; gap: 18px; align-items: start; margin-bottom: 18px; }
+    .note-row .cover { max-width: 260px; }
+
+    /* ===== 服务 ===== */
+    .svc-block { margin-top: 22px; }
+    .svc-block h3 { font-size: 1.12rem; margin: 0 0 6px; }
+    .svc { list-style: none; padding: 0; margin: 0; }
+    .svc li { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid var(--line); }
+    .svc li:last-child { border-bottom: 1px solid var(--line); }
+    .svc .name { font-size: 1.02rem; }
+    .svc .price { color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .svc-note { margin-top: 14px; font-size: .9rem; color: var(--ink-soft); }
+
+    /* ===== 流程 ===== */
+    .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 10px; }
+    .flow article { padding-top: 14px; border-top: 2px solid var(--accent); }
+    .flow .n { font-family: var(--font-heading); color: var(--accent); font-size: 1.35rem; }
+    .flow h3 { margin: 6px 0 8px; font-size: 1.02rem; }
+    .flow p { margin: 0; color: var(--ink-soft); font-size: .9rem; max-width: none; }
+    .flow-note { margin-top: 18px; font-size: .9rem; color: var(--ink-soft); max-width: none; }
+
+    /* ===== 联系 ===== */
+    .wechat { font-size: 1.28rem; margin: 10px 0 8px; font-family: var(--font-heading); }
+    .wechat code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1.05rem; background: var(--muted); padding: 4px 10px; border-radius: 8px; color: var(--accent); user-select: all; }
+    footer { padding-block: 34px; color: var(--ink-soft); font-size: .85rem; }
+
+    @media (max-width: 900px) {
+      .flow { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 760px) {
+      .bar { display: block; padding-inline: 16px; }
+      .brand { display: block; width: 100%; padding-block: 6px; }
+      .nav { width: 100%; justify-content: flex-start; gap: 2px 12px; }
+      .nav button { white-space: nowrap; }
+      section, footer { padding-inline: 16px; }
+      section { padding-block: 52px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-visual { order: -1; max-width: 280px; }
+      .stats { grid-template-columns: 1fr; }
+      .ba { grid-template-columns: 1fr; }
+      .cover-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .cover-title { font-size: .72rem; padding: 18px 8px 34px; line-height: 1.35; }
+      .cover.dark-card .cover-title { font-size: .82rem; top: 14%; padding: 0 10px; }
+      .cover .badge { font-size: .65rem; }
+      .note-row { grid-template-columns: 1fr; }
+      .note-row .cover { max-width: 220px; }
+      .flow { grid-template-columns: 1fr; }
+      p, li { font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="bar">
+      <button class="brand" type="button" data-target="home">小鹿</button>
+      <nav class="nav" aria-label="主要导航">
+        <button type="button" data-target="cases">代表案例</button>
+        <button type="button" data-target="services">服务报价</button>
+        <button type="button" data-target="coop">合作流程</button>
+        <button type="button" data-target="contact">联系</button>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section id="home">
+      <div class="hero">
+        <div>
+          <h1>小鹿</h1>
+          <p class="service-line">帮小红书和抖音商家写文案、剪视频</p>
+          <p class="sub">种草笔记 · 短视频脚本 · 15–60 秒成片剪辑</p>
+          <div class="stats" aria-label="过往合作数据">
+            <div class="stat"><div class="num">单篇最高赞 3.2k</div><span class="cap">美妆种草</span></div>
+            <div class="stat"><div class="num">2 条过 10 万播</div><span class="cap">探店系列</span></div>
+            <div class="stat"><div class="num">私域当周 +900</div><span class="cap">课预告片</span></div>
+          </div>
+          <p class="stats-note">数据来自过往合作，不承诺爆款</p>
+          <div class="btn-row">
+            <button class="btn" type="button" data-target="cases">看代表案例</button>
+            <button class="btn btn-ghost" type="button" data-target="contact">加微信聊档期</button>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img src="images/desk_work.jpg" alt="文案大纲与剪辑时间线工作台">
+        </div>
+      </div>
+    </section>
+
+    <section id="cases">
+      <h2>代表案例</h2>
+      
+
+      <!-- 案例 A 美妆 -->
+      <article class="case-block" id="case-meizhuang">
+        <div class="case-head">
+          <h3>美妆店 · 小红书种草</h3>
+          <span class="case-tag">文案</span>
+        </div>
+        <p class="info-row">小红书｜月更 12 篇｜单篇最高赞 3.2k｜带货链接点击约 4.8%</p>
+        <p class="case-bg">新店要稳定种草，自己写总是「成分堆砌」，转化一般。</p>
+
+        <div class="note-row">
+          <div class="cover note">
+            <img src="images/meizhuang_a.jpg" alt="小红书笔记首图：通勤持妆">
+            <span class="platform-badge">小红书</span>
+          </div>
+          <div class="excerpt">
+            <div class="ex-label">文案摘录</div>
+            <div class="ex-title">空瓶才敢说：这支粉底我通勤造了 28 天</div>
+            <p>先说结论：混油皮夏天也能扛到下班，不是广告词那种「持妆」。</p>
+            <p>我自己的用法是早上薄涂一层，中午只吸油不补粉。下面按「上妆 / 中午 / 拍照」三段说清楚谁适合买。</p>
+          </div>
+        </div>
+
+        <div class="ba" aria-label="改稿对比">
+          <article class="before">
+            <div class="ba-label">改前</div>
+            <p>这款粉底液质地轻薄，遮瑕好，适合夏天。</p>
+          </article>
+          <article class="after">
+            <div class="ba-label">改后</div>
+            <p>混油皮夏天薄涂，中午只吸油不补粉；遮瑕只覆盖泛红，不是倒模。</p>
+          </article>
+        </div>
+        <p class="ba-why">为什么这样改：把「轻薄好看」换成可执行的肤质 + 场景 + 边界，降低广告腔。</p>
+
+        <div class="cover-grid" style="grid-template-columns:repeat(2,1fr);max-width:420px">
+          <div class="cover note"><img src="images/meizhuang_b.jpg" alt="笔记封面：通勤窗边产品"></div>
+          <div class="cover note"><img src="images/meizhuang_c.jpg" alt="笔记封面：上妆试色"></div>
+        </div>
+        <p class="deliver">交付：选题节奏表 + 12 篇可发布笔记文案（按月）。</p>
+      </article>
+
+      <!-- 案例 B 餐饮 -->
+      <article class="case-block" id="case-catering">
+        <div class="case-head">
+          <h3>本地餐饮 · 抖音探店</h3>
+          <span class="case-tag">脚本 + 剪辑</span>
+        </div>
+        <p class="info-row">抖音｜约 15 秒｜系列 18 条｜2 条过 10 万播｜到店核销码使用 +40%（老板反馈）</p>
+        <p class="case-bg">统一字幕模板与前 2 秒钩子，方便老板自己复用片头。</p>
+
+        <div class="cover-grid">
+          <div class="cover">
+            <img src="images/catering_1.jpg" alt="探店封面：招牌浇汁特写">
+            <span class="platform-badge">抖音</span>
+            <div class="cover-title">这家店的招牌我劝你傍晚去｜15 秒探店</div>
+            <span class="badge">0:15</span>
+          </div>
+          <div class="cover">
+            <img src="images/catering_2.jpg" alt="探店封面：门头夜景">
+            <span class="platform-badge">抖音</span>
+            <div class="cover-title">招牌浇头浇下去的声音｜本地人带路</div>
+            <span class="badge">0:15</span>
+          </div>
+          <div class="cover">
+            <img src="images/catering_3.jpg" alt="探店封面：两人桌与核销引导">
+            <span class="platform-badge">抖音</span>
+            <div class="cover-title">两人吃撑 88｜核销码在简介</div>
+            <span class="badge">0:15</span>
+          </div>
+        </div>
+        <p class="hook">「别排错队——招牌不是那锅红的，是右边那口浇汁。」</p>
+        <p class="deliver">交付：18 条脚本 + 成片；老板可复用的字幕与片头模板说明。</p>
+      </article>
+
+      <!-- 案例 C 知识付费 -->
+      <article class="case-block" id="case-course">
+        <div class="case-head">
+          <h3>知识付费 · 系列课预告</h3>
+          <span class="case-tag">脚本 + 剪辑</span>
+        </div>
+        <p class="info-row">视频号 / 抖音｜预告片 6 条｜当周私域加粉 +900</p>
+        <p class="case-bg">6 条预告用同一套版式，片尾统一引导加私域。</p>
+
+        <div class="cover-grid">
+          <div class="cover dark-card">
+            <img src="images/course_1.jpg" alt="预告片封面：课号字卡背景">
+            <span class="ep">第 3 课</span>
+            <div class="cover-title">你一直写不完，不是懒</div>
+            <span class="badge">预告</span>
+          </div>
+          <div class="cover dark-card">
+            <img src="images/course_2.jpg" alt="预告片封面：报名截止提醒">
+            <span class="ep">提醒</span>
+            <div class="cover-title">报名截止前提醒｜名额不是话术</div>
+            <span class="badge">预告</span>
+          </div>
+          <div class="cover dark-card">
+            <img src="images/course_3.jpg" alt="预告片封面：一页纸模板">
+            <span class="ep">带走</span>
+            <div class="cover-title">大纲写到一半就卡死？带走一页纸模板</div>
+            <span class="badge">预告</span>
+          </div>
+        </div>
+        <p class="hook">「这节只解决一件事：大纲写到一半就卡死。看完你能带走一张一页纸模板。」</p>
+        <p class="deliver">交付：6 条预告脚本与成片，统一片尾私域引导。</p>
+      </article>
+    </section>
+
+    <section id="services">
+      <h2>服务与报价</h2>
+      <p>参考区间，随品类和修改量浮动。</p>
+      <div class="svc-block">
+        <h3>按单</h3>
+        <ul class="svc">
+          <li><span class="name">小红书笔记文案</span><span class="price">单篇 80–150</span></li>
+          <li><span class="name">短视频脚本</span><span class="price">条 100–200</span></li>
+          <li><span class="name">成片剪辑（15–60 秒）</span><span class="price">条 150–350</span></li>
+        </ul>
+      </div>
+      <div class="svc-block">
+        <h3>按月包</h3>
+        <ul class="svc">
+          <li><span class="name">小红书月更包（8–12 篇）</span><span class="price">1200–2000</span></li>
+          <li><span class="name">短视频月更包（8 条）</span><span class="price">1800–2800</span></li>
+        </ul>
+      </div>
+      <p class="svc-note">加急、超改、工程文件买断另计。</p>
+    </section>
+
+    <section id="coop">
+      <h2>合作流程</h2>
+      <div class="flow">
+        <article>
+          <div class="n">01</div>
+          <h3>说需求</h3>
+          <p>微信说清平台、品类、参考账号、截止日、有无素材。</p>
+        </article>
+        <article>
+          <div class="n">02</div>
+          <h3>报价锁档</h3>
+          <p>回档期与报价，定金 50% 开工。</p>
+        </article>
+        <article>
+          <div class="n">03</div>
+          <h3>确认方向</h3>
+          <p>文案先交标题+大纲；视频先交粗剪或脚本结构。</p>
+        </article>
+        <article>
+          <div class="n">04</div>
+          <h3>改稿</h3>
+          <p>初稿 → 修改 1–2 轮，一次说清修改点。</p>
+        </article>
+        <article>
+          <div class="n">05</div>
+          <h3>交付</h3>
+          <p>尾款后交定稿：文案源文件、成片 mp4；工程文件是否包含写进报价。</p>
+        </article>
+      </div>
+      <p class="flow-note">改期提前说一声。不承诺爆款。</p>
+    </section>
+
+    <section id="contact">
+      <span class="label">联系</span>
+      <h2>加微信发我你的账号</h2>
+      <p>发链接或竞品参考即可，我回是否接得下、最早档期。</p>
+      <p class="wechat">微信 <code>xiaolu_content</code></p>
+      <p>小红书：小鹿接案日记</p>
+    </section>
+  </main>
+  <footer>© 小鹿</footer>
+  <script>
+    (() => {
+      const root = document.documentElement;
+      const header = document.querySelector('.site-header');
+      let retries = 0;
+      const measureNav = () => {
+        const height = header ? Math.ceil(header.getBoundingClientRect().height) : 0;
+        if (height > 0) { root.style.setProperty('--nav-offset', `${height + 8}px`); retries = 0; }
+        else if (retries < 8) { retries += 1; requestAnimationFrame(measureNav); }
+      };
+      document.querySelectorAll('[data-target]').forEach((control) => {
+        control.addEventListener('click', (event) => {
+          event.preventDefault();
+          const id = control.getAttribute('data-target');
+          if (id === 'home') window.scrollTo({ top: 0, behavior: 'smooth' });
+          else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+      const onScroll = () => header && header.classList.toggle('is-scrolled', window.scrollY > 8);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('load', measureNav);
+      window.addEventListener('resize', measureNav);
+      if (window.ResizeObserver && header) new ResizeObserver(measureNav).observe(header);
+      document.addEventListener('DOMContentLoaded', () => { measureNav(); onScroll(); });
+      measureNav(); onScroll();
+    })();
+  </script>
+</body>
+</html>
